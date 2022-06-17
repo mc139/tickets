@@ -1,0 +1,10 @@
+<persistence>
+    <persistence-unit name="my-persistence-unit">
+        ...
+        <properties>
+            <property name="hibernate.dialect" value="PostgresSQL95Dialect" />
+            <property name="hibernate.jdbc.time_zone" value="UTC"/>
+            ...
+        </properties>
+    </persistence-unit>
+</persistence>

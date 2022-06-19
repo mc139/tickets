@@ -1,6 +1,7 @@
 package com.tickets.tickets.service;
 
 import com.tickets.tickets.exception.PeselNotFoundException;
+import com.tickets.tickets.exception.TicketNotFoundException;
 import com.tickets.tickets.model.Ticket;
 import com.tickets.tickets.repository.TicketRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -28,6 +29,10 @@ public class TicketService {
        return ticketRepository.findAllByPesel(pesel);
     }
 
+    public Ticket getTicketById(Long id){
+        return ticketRepository.findById(id).orElseThrow(()-> new TicketNotFoundException(id));
+    }
+
     public void save(Ticket ticket) {
 
         if (personService.isPeselInDataBase(ticket.getPesel())){
@@ -36,5 +41,9 @@ public class TicketService {
            log.error("PESEL NOT IN DATA BASE!! : " + ticket.getPesel());
         }
 
+    }
+
+    public void deleteById(Long id) {
+        ticketRepository.deleteById(id);
     }
 }

@@ -12,6 +12,7 @@ import java.time.LocalDate;
 @ToString
 @EqualsAndHashCode
 @RequiredArgsConstructor
+@NoArgsConstructor
 public class TrafficOffence {
 
     @Id

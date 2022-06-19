@@ -17,11 +17,12 @@ public class TrafficOffence {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
+    @NonNull
     private int numberOfPoints;
-
+    @NonNull
     private int ticketValue;
 
+    @NonNull
     @ManyToOne
     private OffenceType offenceType;
 

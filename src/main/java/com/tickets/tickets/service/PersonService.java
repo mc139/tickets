@@ -34,12 +34,12 @@ public class PersonService {
         personRepository.deleteById(id);
     }
 
-    public Person findPersonByPesel(String pesel){
-      return Optional.ofNullable(personRepository.findByPesel(pesel)).orElseThrow(()-> new PeselNotFoundException(pesel));
+    public Person findPersonByPesel(String pesel) {
+        return Optional.ofNullable(personRepository.findByPesel(pesel)).orElseThrow(() -> new PeselNotFoundException(pesel));
     }
 
-    public boolean isPeselInDataBase(String pesel){
-       return personRepository.findByPesel(pesel) != null;
+    public boolean isPeselInDataBase(String pesel) {
+        return personRepository.findByPesel(pesel) != null;
     }
 
 }

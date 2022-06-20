@@ -22,22 +22,22 @@ public class PersonController {
     }
 
     @GetMapping("/{id}")
-    public Person getPerson(@PathVariable Long id){
+    public Person getPerson(@PathVariable Long id) {
         return personService.findPersonById(id);
     }
 
     @GetMapping("/pesel/{pesel}")
-    public Person getPersonByPesel(@PathVariable String pesel){
+    public Person getPersonByPesel(@PathVariable String pesel) {
         return personService.findPersonByPesel(pesel);
     }
 
     @PostMapping
-    public Person addPerson(@RequestBody Person person){
-       return personService.save(person);
+    public Person addPerson(@RequestBody Person person) {
+        return personService.save(person);
     }
 
     @DeleteMapping("/delete/{id}")
-    public void deletePerson(@PathVariable Long id){
+    public void deletePerson(@PathVariable Long id) {
         personService.deletePerson(id);
     }
 

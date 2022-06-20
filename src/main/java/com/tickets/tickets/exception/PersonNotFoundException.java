@@ -1,6 +1,7 @@
 package com.tickets.tickets.exception;
 
 public class PersonNotFoundException extends RuntimeException {
+
     public PersonNotFoundException() {
     }
 

@@ -4,6 +4,7 @@ import com.tickets.tickets.model.TrafficOffence;
 import com.tickets.tickets.service.TrafficOffenceService;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -17,22 +18,22 @@ public class TrafficOffenceController {
     }
 
     @PostMapping("/create")
-    public TrafficOffence createTrafficOffence(@RequestBody TrafficOffence trafficOffence){
+    public TrafficOffence createTrafficOffence(@RequestBody @Valid TrafficOffence trafficOffence) {
         return trafficOffenceService.save(trafficOffence);
     }
 
     @GetMapping("/{id}")
-    public TrafficOffence findById(@PathVariable Long id){
+    public TrafficOffence findById(@PathVariable Long id) {
         return trafficOffenceService.findById(id);
     }
 
     @GetMapping("/all")
-    public List<TrafficOffence> findAll(){
+    public List<TrafficOffence> findAll() {
         return trafficOffenceService.findAll();
     }
 
     @DeleteMapping("/{id}/delete")
-    public void deleteById(@PathVariable Long id){
+    public void deleteById(@PathVariable Long id) {
         trafficOffenceService.delete(id);
     }
 

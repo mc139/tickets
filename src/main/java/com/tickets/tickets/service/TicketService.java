@@ -7,14 +7,16 @@ import com.tickets.tickets.repository.TicketRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.validator.constraints.pl.PESEL;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.Transient;
 import java.util.List;
 
 @Slf4j
 @Service
 public class TicketService {
-    private TicketRepository ticketRepository;
-    private PersonService personService;
+    private final TicketRepository ticketRepository;
+    private final PersonService personService;
 
     public TicketService(TicketRepository ticketRepository, PersonService personService) {
         this.ticketRepository = ticketRepository;
@@ -33,10 +35,13 @@ public class TicketService {
         return ticketRepository.findById(id).orElseThrow(() -> new TicketNotFoundException(id));
     }
 
+    @Transient
+    @Transactional(rollbackFor = Throwable.class)
     public Ticket save(Ticket ticket) {
         if (!personService.isPeselInDataBase(ticket.getPesel())) {
             throw new PeselNotFoundException(ticket.getPesel());
         }
+
         return ticketRepository.save(ticket);
     }
 

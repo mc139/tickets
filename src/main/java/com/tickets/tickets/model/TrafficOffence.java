@@ -1,10 +1,13 @@
 package com.tickets.tickets.model;
 
 import lombok.*;
-import org.hibernate.validator.constraints.pl.PESEL;
 
-import javax.persistence.*;
-import java.time.LocalDate;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 
 @Entity
 @Getter
@@ -18,14 +21,13 @@ public class TrafficOffence {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Max(value = 15)
+    @Min(value = 0)
     @NonNull
     private int numberOfPoints;
     @NonNull
     private int ticketValue;
-
     @NonNull
-    @ManyToOne
-    private OffenceType offenceType;
-
+    private String offenceType;
 
 }

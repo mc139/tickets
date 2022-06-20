@@ -32,8 +32,8 @@ public class PersonController {
     }
 
     @PostMapping
-    public void addPerson(@RequestBody Person person){
-        personService.save(person);
+    public Person addPerson(@RequestBody Person person){
+       return personService.save(person);
     }
 
     @DeleteMapping("/delete/{id}")

@@ -32,8 +32,8 @@ public class TicketController {
     }
 
     @PostMapping
-    public void addTicket(@RequestBody Ticket ticket){
-        ticketService.save(ticket);
+    public Ticket addTicket(@RequestBody Ticket ticket){
+      return ticketService.save(ticket);
     }
 
     @DeleteMapping("/delete/{id}")

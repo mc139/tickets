@@ -15,9 +15,8 @@ public class OffenceTypeService {
         this.offenceTypeRepository = offenceTypeRepository;
     }
 
-
-    public void save(OffenceType offenceType){
-        offenceTypeRepository.save(offenceType);
+    public OffenceType save(OffenceType offenceType){
+       return offenceTypeRepository.save(offenceType);
     }
 
     public List<OffenceType> getAll(){

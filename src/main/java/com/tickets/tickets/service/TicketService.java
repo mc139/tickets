@@ -21,26 +21,23 @@ public class TicketService {
         this.personService = personService;
     }
 
-    public List<Ticket> getAllTickets(){
-       return ticketRepository.findAll();
+    public List<Ticket> getAllTickets() {
+        return ticketRepository.findAll();
     }
 
-    public List<Ticket> getAllTickets(@PESEL String pesel){
-       return ticketRepository.findAllByPesel(pesel);
+    public List<Ticket> getAllTickets(@PESEL String pesel) {
+        return ticketRepository.findAllByPesel(pesel);
     }
 
-    public Ticket getTicketById(Long id){
-        return ticketRepository.findById(id).orElseThrow(()-> new TicketNotFoundException(id));
+    public Ticket getTicketById(Long id) {
+        return ticketRepository.findById(id).orElseThrow(() -> new TicketNotFoundException(id));
     }
 
-    public void save(Ticket ticket) {
-
-        if (personService.isPeselInDataBase(ticket.getPesel())){
-            ticketRepository.save(ticket);
-        } else {
-           log.error("PESEL NOT IN DATA BASE!! : " + ticket.getPesel());
+    public Ticket save(Ticket ticket) {
+        if (!personService.isPeselInDataBase(ticket.getPesel())) {
+            throw new PeselNotFoundException(ticket.getPesel());
         }
-
+        return ticketRepository.save(ticket);
     }
 
     public void deleteById(Long id) {

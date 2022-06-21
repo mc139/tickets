@@ -35,7 +35,7 @@ public class TicketService {
         return ticketRepository.findById(id).orElseThrow(() -> new TicketNotFoundException(id));
     }
 
-    @Transient
+//    @Transient
     @Transactional(rollbackFor = Throwable.class)
     public Ticket save(Ticket ticket) {
         if (!personService.isPeselInDataBase(ticket.getPesel())) {

@@ -14,6 +14,8 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @RequiredArgsConstructor
+@ToString
+@EqualsAndHashCode
 public class Ticket {
 
     @Id
@@ -28,7 +30,7 @@ public class Ticket {
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     private LocalDate localDate = LocalDate.now();
 
-    @OneToMany(cascade = CascadeType.REMOVE, fetch = FetchType.EAGER)
+    @ManyToMany(cascade = CascadeType.REMOVE, fetch = FetchType.EAGER)
     private List<TrafficOffence> trafficOffenceList = new ArrayList<>();
 
 }

@@ -36,10 +36,10 @@ public class DbFiller {
         Thread.sleep(1000);
         ticketService.save(ticket);
 
-        trafficOffenceService.save( new TrafficOffence(3,500,"BELTS"));
-        trafficOffenceService.save( new TrafficOffence(3,500,"SPEED"));
-        trafficOffenceService.save(new TrafficOffence(3,500,"UNSAFE DRIVE"));
-        trafficOffenceService.save( new TrafficOffence(3,500,"DRIFTING"));
+        trafficOffenceService.save(new TrafficOffence(3, 500, "BELTS"));
+        trafficOffenceService.save(new TrafficOffence(3, 500, "SPEED"));
+        trafficOffenceService.save(new TrafficOffence(3, 500, "UNSAFE DRIVE"));
+        trafficOffenceService.save(new TrafficOffence(3, 500, "DRIFTING"));
     }
 
 }

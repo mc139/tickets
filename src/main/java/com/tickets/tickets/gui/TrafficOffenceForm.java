@@ -11,18 +11,15 @@ import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.binder.Binder;
 import com.vaadin.flow.data.converter.StringToIntegerConverter;
-import com.vaadin.flow.data.selection.MultiSelect;
 import com.vaadin.flow.spring.annotation.SpringComponent;
 import com.vaadin.flow.spring.annotation.UIScope;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 @SpringComponent
 @UIScope
-public class TrafficOffenceForm  extends Div {
+public class TrafficOffenceForm extends Div {
     private Crud<TrafficOffence> crud;
     private Grid<TrafficOffence> grid = new Grid<>();
 
@@ -61,14 +58,15 @@ public class TrafficOffenceForm  extends Div {
                 .bind(TrafficOffence::getNumberOfPoints, TrafficOffence::setNumberOfPoints);
         binder.forField(ticketValue)
                 .withConverter(new StringToIntegerConverter("It must be a number"))
-                .bind(TrafficOffence::getTicketValue,TrafficOffence::setTicketValue);
+                .bind(TrafficOffence::getTicketValue, TrafficOffence::setTicketValue);
         return new BinderCrudEditor<>(binder, form);
     }
 
     public Grid<TrafficOffence> getGrid() {
         return grid;
     }
-    public List<TrafficOffence> getSelectedItems(){
+
+    public List<TrafficOffence> getSelectedItems() {
         return new ArrayList<>(grid.asMultiSelect().getSelectedItems());
     }
 

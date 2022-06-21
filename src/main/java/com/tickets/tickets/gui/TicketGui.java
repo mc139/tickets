@@ -8,10 +8,6 @@ import com.vaadin.flow.router.Route;
 import com.vaadin.flow.spring.annotation.SpringComponent;
 import com.vaadin.flow.spring.annotation.UIScope;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
 @SpringComponent
 @UIScope
 @Route("gui/tickets")
@@ -27,7 +23,7 @@ public class TicketGui extends VerticalLayout {
         this.ticketForm = ticketForm;
         this.trafficOffenceForm = trafficOffenceForm;
         trafficOffenceForm.setSizeFull();
-        add(ticketForm,trafficOffenceForm, create);
+        add(ticketForm, trafficOffenceForm, create);
         create.addClickListener(click -> createTicket());
     }
 

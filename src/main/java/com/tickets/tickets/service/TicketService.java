@@ -9,7 +9,6 @@ import org.hibernate.validator.constraints.pl.PESEL;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.Transient;
 import java.util.List;
 
 @Slf4j
@@ -35,7 +34,7 @@ public class TicketService {
         return ticketRepository.findById(id).orElseThrow(() -> new TicketNotFoundException(id));
     }
 
-//    @Transient
+    //    @Transient
     @Transactional(rollbackFor = Throwable.class)
     public Ticket save(Ticket ticket) {
         if (!personService.isPeselInDataBase(ticket.getPesel())) {

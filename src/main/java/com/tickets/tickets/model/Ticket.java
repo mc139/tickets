@@ -28,8 +28,9 @@ public class Ticket {
 
     @NonNull
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
-    private LocalDate localDate = LocalDate.now();
+    private LocalDate localDate;
 
+    private int totalTicketPrice;
     @ManyToMany(cascade = CascadeType.REMOVE, fetch = FetchType.EAGER)
     private List<TrafficOffence> trafficOffenceList = new ArrayList<>();
 

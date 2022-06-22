@@ -20,20 +20,29 @@ import java.util.List;
 @SpringComponent
 @UIScope
 public class TrafficOffenceForm extends Div {
-    private Crud<TrafficOffence> crud;
-    private Grid<TrafficOffence> grid = new Grid<>();
+    private final Crud<TrafficOffence> crud;
+    private final Grid<TrafficOffence> grid = new Grid<>();
+    private final TrafficOffenceDataProvider trafficOffenceDataProvider;
+    private final TrafficOffenceService trafficOffenceService;
 
-    public TrafficOffenceForm(TrafficOffenceService trafficOffenceService) {
+    public TrafficOffenceForm(TrafficOffenceDataProvider trafficOffenceDataProvider, TrafficOffenceService trafficOffenceService) {
+        this.trafficOffenceDataProvider = trafficOffenceDataProvider;
+        this.trafficOffenceService = trafficOffenceService;
 
         crud = new Crud<>(
                 TrafficOffence.class,
                 createEditor()
         );
-        grid.setItems(trafficOffenceService.findAll());
+        grid.setItems(this.trafficOffenceService.findAll());
         configureGrid();
+        setupDataProvider();
         crud.setGrid(grid);
 
         add(crud);
+    }
+
+    private void newItem() {
+        System.out.println();
     }
 
     private void configureGrid() {
@@ -48,16 +57,35 @@ public class TrafficOffenceForm extends Div {
         grid.asMultiSelect();
     }
 
+    private void setupDataProvider() {
+        crud.setDataProvider(trafficOffenceDataProvider);
+        crud.addDeleteListener(deleteEvent ->
+                trafficOffenceDataProvider.delete(deleteEvent.getItem())
+        );
+        crud.addSaveListener(saveEvent ->
+                trafficOffenceService.save(saveEvent.getItem())
+        );
+    }
+
     private CrudEditor<TrafficOffence> createEditor() {
         TextField numberOfPoints = new TextField("number of points");
-        TextField ticketValue = new TextField("ticket Value");
-        FormLayout form = new FormLayout(numberOfPoints, ticketValue);
+        TextField ticketValue = new TextField("ticket value");
+        TextField offenceType = new TextField("type of offence");
+        FormLayout form = new FormLayout(offenceType, numberOfPoints, ticketValue);
         Binder<TrafficOffence> binder = new Binder<>(TrafficOffence.class);
+        binder.forField(offenceType)
+                .withValidator(value -> value.length() >= 3,"Type of offence must be at least 3 characters")
+                .withValidator(value -> value.length() < 250,"Type of offence can't be longer then 250 characters")
+                .bind(TrafficOffence::getOffenceType, TrafficOffence::setOffenceType);
         binder.forField(numberOfPoints)
                 .withConverter(new StringToIntegerConverter("It must be a number"))
+                .withValidator(value -> value >= 0, "Number of points can't be lower then 0")
+                .withValidator(value -> value >= 15, "Number of points must be lower then 15 ")
                 .bind(TrafficOffence::getNumberOfPoints, TrafficOffence::setNumberOfPoints);
         binder.forField(ticketValue)
                 .withConverter(new StringToIntegerConverter("It must be a number"))
+                .withValidator(value -> value >= 0, "Ticket Value must be greater then 0")
+                .withValidator(value -> value <= 15000, "Ticket Value must be lower then 1500")
                 .bind(TrafficOffence::getTicketValue, TrafficOffence::setTicketValue);
         return new BinderCrudEditor<>(binder, form);
     }
@@ -71,3 +99,4 @@ public class TrafficOffenceForm extends Div {
     }
 
 }
+

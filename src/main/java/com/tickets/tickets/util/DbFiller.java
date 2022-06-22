@@ -11,6 +11,8 @@ import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Controller;
 
+import java.time.LocalDate;
+
 @Controller
 public class DbFiller {
     private final PersonService personService;
@@ -31,7 +33,7 @@ public class DbFiller {
         personService.save(new Person(null, "78052253875", "Adam", "Dobrze Kodze", "test3@gmail.com"));
         TrafficOffence trafficOffence = new TrafficOffence(12, 4, "TEST");
         trafficOffenceService.save(trafficOffence);
-        Ticket ticket = new Ticket("56071155727");
+        Ticket ticket = new Ticket("56071155727", LocalDate.now());
         ticket.getTrafficOffenceList().add(trafficOffence);
         Thread.sleep(1000);
         ticketService.save(ticket);

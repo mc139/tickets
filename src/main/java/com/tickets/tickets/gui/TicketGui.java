@@ -39,7 +39,7 @@ public class TicketGui extends VerticalLayout {
             Ticket ticket = new Ticket(ticketForm.getPesel(),ticketForm.getDate());
             ticket.setTrafficOffenceList(trafficOffenceForm.getSelectedItems());
             ticketService.save(ticket);
-            log.info("Ticket has been saved to DB , this person has :" + ticketService.getTotalNumberOfPoints(ticket.getPesel()) + "points");
+            log.info("Ticket has been saved to DB , this person has :" + ticketService.getTotalNumberOfPersonPoints(ticket.getPesel()) + "points");
         }
 
     }

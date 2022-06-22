@@ -5,6 +5,7 @@ import org.hibernate.validator.constraints.pl.PESEL;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
+import javax.validation.constraints.PastOrPresent;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -28,6 +29,7 @@ public class Ticket {
 
     @NonNull
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+    @PastOrPresent
     private LocalDate localDate;
 
     private int totalTicketPrice;

@@ -1,5 +1,6 @@
 package com.tickets.tickets.gui;
 
+import com.tickets.tickets.constant.Constants;
 import com.tickets.tickets.model.TrafficOffence;
 import com.tickets.tickets.service.TrafficOffenceService;
 import com.vaadin.flow.component.crud.BinderCrudEditor;
@@ -13,10 +14,11 @@ import com.vaadin.flow.data.binder.Binder;
 import com.vaadin.flow.data.converter.StringToIntegerConverter;
 import com.vaadin.flow.spring.annotation.SpringComponent;
 import com.vaadin.flow.spring.annotation.UIScope;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.ArrayList;
 import java.util.List;
-
+@Slf4j
 @SpringComponent
 @UIScope
 public class TrafficOffenceForm extends Div {
@@ -29,16 +31,21 @@ public class TrafficOffenceForm extends Div {
         this.trafficOffenceDataProvider = trafficOffenceDataProvider;
         this.trafficOffenceService = trafficOffenceService;
 
-        crud = new Crud<>(
-                TrafficOffence.class,
-                createEditor()
-        );
+        crud = getTrafficOffenceCrud();
         grid.setItems(this.trafficOffenceService.findAll());
         configureGrid();
         setupDataProvider();
         crud.setGrid(grid);
-
         add(crud);
+    }
+
+    private Crud<TrafficOffence> getTrafficOffenceCrud() {
+        final Crud<TrafficOffence> crud;
+        crud = new Crud<>(
+                TrafficOffence.class,
+                createEditor()
+        );
+        return crud;
     }
 
     private void newItem() {
@@ -59,11 +66,24 @@ public class TrafficOffenceForm extends Div {
 
     private void setupDataProvider() {
         crud.setDataProvider(trafficOffenceDataProvider);
-        crud.addDeleteListener(deleteEvent ->
-                trafficOffenceDataProvider.delete(deleteEvent.getItem())
+        cofigureDelete();
+        configureSave();
+    }
+
+    private void configureSave() {
+        crud.addSaveListener(saveEvent ->{
+            log.info("User created custom traffic offence : " + saveEvent.getItem().getOffenceType());
+            trafficOffenceService.save(saveEvent.getItem());
+                }
+
         );
-        crud.addSaveListener(saveEvent ->
-                trafficOffenceService.save(saveEvent.getItem())
+    }
+
+    private void cofigureDelete() {
+        crud.addDeleteListener(deleteEvent -> {
+            log.info("User deleted traffic offence : " + deleteEvent.getItem().getOffenceType());
+                    trafficOffenceDataProvider.delete(deleteEvent.getItem());
+                }
         );
     }
 
@@ -73,21 +93,31 @@ public class TrafficOffenceForm extends Div {
         TextField offenceType = new TextField("type of offence");
         FormLayout form = new FormLayout(offenceType, numberOfPoints, ticketValue);
         Binder<TrafficOffence> binder = new Binder<>(TrafficOffence.class);
+        configureBinder(numberOfPoints, ticketValue, offenceType, binder);
+        return new BinderCrudEditor<>(binder, form);
+    }
+
+    private void configureBinder(TextField numberOfPoints, TextField ticketValue, TextField offenceType, Binder<TrafficOffence> binder) {
+        int maxTicketValue = 5000;
+        int maxPointPerTicket = 15;
         binder.forField(offenceType)
-                .withValidator(value -> value.length() >= 3,"Type of offence must be at least 3 characters")
-                .withValidator(value -> value.length() < 250,"Type of offence can't be longer then 250 characters")
+                .asRequired(Constants.EMPTY_FIELD_MESSAGE)
+                .withValidator(value -> value.length() >= 3, Constants.MIN_LENGTH_MESSAGE)
+                .withValidator(value -> value.length() < 250, Constants.MAX_LENGTH_MESSAGE)
                 .bind(TrafficOffence::getOffenceType, TrafficOffence::setOffenceType);
         binder.forField(numberOfPoints)
-                .withConverter(new StringToIntegerConverter("It must be a number"))
-                .withValidator(value -> value >= 0, "Number of points can't be lower then 0")
-                .withValidator(value -> value >= 15, "Number of points must be lower then 15 ")
+                .asRequired(Constants.EMPTY_FIELD_MESSAGE)
+                .withConverter(new StringToIntegerConverter(Constants.NOT_A_NUMBER_MESSAGE))
+                .withValidator(value -> value >= 0, Constants.MIN_NUMBER_OF_POINTS_MESSAGE)
+                .withValidator(value -> value <= maxPointPerTicket, Constants.MAX_NUMBER_OF_POINTS_MESSAGE + maxPointPerTicket)
                 .bind(TrafficOffence::getNumberOfPoints, TrafficOffence::setNumberOfPoints);
+
         binder.forField(ticketValue)
-                .withConverter(new StringToIntegerConverter("It must be a number"))
-                .withValidator(value -> value >= 0, "Ticket Value must be greater then 0")
-                .withValidator(value -> value <= 15000, "Ticket Value must be lower then 1500")
+                .asRequired(Constants.EMPTY_FIELD_MESSAGE)
+                .withConverter(new StringToIntegerConverter(Constants.NOT_A_NUMBER_MESSAGE))
+                .withValidator(value -> value >= 0, Constants.TICKET_VALUE_MIN_MESSAGE)
+                .withValidator(value -> value <= maxTicketValue, Constants.TICKET_VALUE_MAX_MESSAGE + maxTicketValue)
                 .bind(TrafficOffence::getTicketValue, TrafficOffence::setTicketValue);
-        return new BinderCrudEditor<>(binder, form);
     }
 
     public Grid<TrafficOffence> getGrid() {

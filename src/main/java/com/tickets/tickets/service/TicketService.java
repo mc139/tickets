@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Objects;
 
 @Slf4j
 @Service
@@ -74,6 +75,7 @@ public class TicketService {
         Person person = personService.findPersonByPesel(ticket.getPesel());
 
         if (countPointsFromCurrentYear(ticket.getPesel()) + getTotalNumberOfPointsFromTicket(ticket) > ticketProperties.getMaxPointsPerYear()) {
+            //todo emailService implementation cant be done yet due to new google policy
 //            mailService.sendEmail(person.getEmail(), ticketProperties.getSubject(), ticketProperties.getText());
             log.info("Email has been sent to : " + person.getEmail());
         }
@@ -86,9 +88,11 @@ public class TicketService {
 
     public int countPointsFromCurrentYear(String pesel) {
         return ticketRepository.findAllByPesel(pesel).stream()
+                .filter(Objects::nonNull)
                 .filter(c -> c.getLocalDate().isAfter(LocalDate.now().minusYears(1)))
                 .mapToInt(c -> c.getTrafficOffenceList()
                         .stream()
+                        .filter(Objects::nonNull)
                         .mapToInt(TrafficOffence::getNumberOfPoints)
                         .sum())
                 .sum();

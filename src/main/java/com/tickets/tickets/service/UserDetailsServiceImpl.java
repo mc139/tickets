@@ -1,4 +1,4 @@
-package com.tickets.tickets.model;
+package com.tickets.tickets.service;
 
 import com.tickets.tickets.repository.UserRepository;
 import org.springframework.security.core.userdetails.UserDetails;

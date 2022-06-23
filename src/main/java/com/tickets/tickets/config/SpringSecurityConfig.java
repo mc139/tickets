@@ -1,7 +1,7 @@
 package com.tickets.tickets.config;
 
 import com.tickets.tickets.model.AppUser;
-import com.tickets.tickets.model.UserDetailsServiceImpl;
+import com.tickets.tickets.service.UserDetailsServiceImpl;
 import com.tickets.tickets.repository.UserRepository;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.annotation.Bean;
@@ -43,8 +43,8 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
         http.csrf().disable()
                 .authorizeRequests()
 //                .antMatchers("/gui/**").hasAnyRole("ADMIN")
-                .antMatchers("/api/**").hasAnyRole("ADMIN")
-//                .antMatchers("/api/**").permitAll()
+                .antMatchers("/api/**").permitAll()
+//                .antMatchers("/api/**").hasAnyRole("ADMIN")
                 .and()
                 .formLogin()
                 .loginPage("/login")

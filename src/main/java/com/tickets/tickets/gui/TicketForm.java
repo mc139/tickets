@@ -13,7 +13,7 @@ import java.time.LocalDate;
 public class TicketForm extends FormLayout {
 
     private final TextField pesel = new TextField("PESEL");
-    private DatePicker date = new DatePicker("Select a date:");
+    private final DatePicker date = new DatePicker("Select a date:");
 
     public TicketForm() {
         add(date, pesel);

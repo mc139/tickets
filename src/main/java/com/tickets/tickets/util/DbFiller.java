@@ -38,10 +38,17 @@ public class DbFiller {
         Thread.sleep(1000);
         ticketService.save(ticket);
 
-        trafficOffenceService.save(new TrafficOffence(3, 500, "BELTS"));
-        trafficOffenceService.save(new TrafficOffence(3, 500, "SPEED"));
-        trafficOffenceService.save(new TrafficOffence(3, 500, "UNSAFE DRIVE"));
-        trafficOffenceService.save(new TrafficOffence(3, 500, "DRIFTING"));
+        trafficOffenceService.save(new TrafficOffence(4, 500, "Driving without due care and attention"));
+        trafficOffenceService.save(new TrafficOffence(5, 500, "Driving without due care and attention or without reasonable consideration for other road users"));
+        trafficOffenceService.save(new TrafficOffence(7, 300, "Driving without reasonable consideration for other road users"));
+        trafficOffenceService.save(new TrafficOffence(2, 450, "Causing death by careless driving then failing to supply a specimen for alcohol analysis"));
+        trafficOffenceService.save(new TrafficOffence(4, 560, "Failing to stop after an accident"));
+        trafficOffenceService.save(new TrafficOffence(5, 570, "Failing to give particulars or report an accident within 24 hours"));
+        trafficOffenceService.save(new TrafficOffence(6, 640, "Undefined accident offences"));
+        trafficOffenceService.save(new TrafficOffence(3, 120, "Driving while disqualified by order of court"));
+        trafficOffenceService.save(new TrafficOffence(7, 500, "Attempting to drive while disqualified by order of court"));
+        trafficOffenceService.save(new TrafficOffence(10, 1500, "Causing death by driving while disqualified"));
+        trafficOffenceService.save(new TrafficOffence(9, 1200, "Causing serious injury by driving while disqualified"));
     }
 
 }

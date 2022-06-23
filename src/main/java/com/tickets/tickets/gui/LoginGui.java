@@ -20,9 +20,7 @@ public class LoginGui extends VerticalLayout implements BeforeEnterListener {
         setSizeFull();
         setAlignItems(FlexComponent.Alignment.CENTER);
         setJustifyContentMode(FlexComponent.JustifyContentMode.CENTER);
-
         login.setAction("login");
-
         add(new H1("Please provide your login details."), login);
     }
 

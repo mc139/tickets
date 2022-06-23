@@ -1,5 +1,7 @@
 package com.tickets.tickets.gui;
 
+import com.tickets.tickets.exception.ExceededAmountOfPointException;
+import com.tickets.tickets.exception.GlobalExceptionHandler;
 import com.tickets.tickets.model.Ticket;
 import com.tickets.tickets.model.TrafficOffence;
 import com.tickets.tickets.service.PersonService;
@@ -11,6 +13,7 @@ import com.vaadin.flow.router.Route;
 import com.vaadin.flow.spring.annotation.SpringComponent;
 import com.vaadin.flow.spring.annotation.UIScope;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.event.EventListener;
 
 @Slf4j
 @SpringComponent
@@ -21,22 +24,26 @@ public class TicketGui extends VerticalLayout {
     private final TicketService ticketService;
     private final TicketForm ticketForm;
     private final TrafficOffenceForm trafficOffenceForm;
-    private final Button create = new Button("CREATE TICKET");
     private final PersonService personService;
 
-    public TicketGui(TicketService ticketService, TicketForm ticketForm, TrafficOffenceForm trafficOffenceForm, PersonService personService) {
+    public TicketGui(TicketService ticketService,
+                     TicketForm ticketForm,
+                     TrafficOffenceForm trafficOffenceForm,
+                     PersonService personService) {
         this.ticketService = ticketService;
         this.ticketForm = ticketForm;
         this.trafficOffenceForm = trafficOffenceForm;
         this.personService = personService;
         trafficOffenceForm.setSizeFull();
+        Button create = new Button("CREATE TICKET");
         add(ticketForm, trafficOffenceForm, create);
         create.addClickListener(click -> createTicket());
     }
 
     private void createTicket() {
-        if (isTicketValid(15, 15000)) {
-            Ticket ticket = new Ticket(ticketForm.getPesel(),ticketForm.getDate());
+
+        if (isTicketValid(15, 5000)) {
+            Ticket ticket = new Ticket(ticketForm.getPesel(), ticketForm.getDate());
             ticket.setTrafficOffenceList(trafficOffenceForm.getSelectedItems());
             ticketService.save(ticket);
             log.info("Ticket has been saved to DB , this person has :" + ticketService.getTotalNumberOfPersonPoints(ticket.getPesel()) + "points");
@@ -69,6 +76,5 @@ public class TicketGui extends VerticalLayout {
                 .mapToInt(TrafficOffence::getNumberOfPoints)
                 .sum();
     }
-
 
 }

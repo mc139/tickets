@@ -1,6 +1,7 @@
 package com.tickets.tickets.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -20,6 +21,7 @@ import java.util.Collections;
 @Getter
 @Setter
 @NoArgsConstructor
+@EqualsAndHashCode
 public class AppUser implements UserDetails {
 
     @Id
